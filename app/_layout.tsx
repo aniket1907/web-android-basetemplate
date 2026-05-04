@@ -1,24 +1,24 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { Slot } from 'expo-router';
+import { useWindowDimensions } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ThemeProvider } from '../theme/themeContext';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+import MobileLayout from './layouts/MobileLayout';
+import WebLayout from './layouts/WebLayout';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  const { width } = useWindowDimensions();
+  const isMobile = width < 768;
+
+  const Layout = isMobile ? MobileLayout : WebLayout;
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
+    <ThemeProvider>
+      <SafeAreaProvider>
+        <Layout>
+          <Slot />
+        </Layout>
+      </SafeAreaProvider>
     </ThemeProvider>
   );
 }
