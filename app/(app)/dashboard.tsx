@@ -1,5 +1,5 @@
 import { Text, View } from 'react-native';
-import Button from '../../components/ui/button';
+import Button from '../../components/ui/Button';
 import Card from '../../components/ui/Card';
 import Input from '../../components/ui/Input';
 import { useTheme } from '../../theme/themeContext';
@@ -22,10 +22,15 @@ export default function Dashboard() {
 
       <Input placeholder="Enter something..." />
 
-      <Button
-        title="Click Me"
-        onPress={() => console.log('Pressed')}
-      />
+    <View style={{ gap: theme.spacing.sm }}>
+  <Button title="Click Me" onPress={() => console.log('Pressed')} />
+
+  <Button title="Add" icon="add" />
+
+  <Button title="Next" icon="arrow-forward" iconPosition="right" />
+
+  <Button title="Delete" variant="danger" icon="trash" />
+</View>
       
     </View>
   );
