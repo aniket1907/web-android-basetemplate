@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import Button from '../../components/ui/Button';
 import Card from '../../components/ui/Card';
 import Input from '../../components/ui/Input';
@@ -12,6 +12,16 @@ export default function Dashboard() {
   const [error, setError] = useState('');
 
   return (
+    <ScrollView
+  contentContainerStyle={{
+    padding: theme.spacing.md,
+    gap: theme.spacing.lg,
+    backgroundColor: theme.colors.background,
+  }}
+  showsVerticalScrollIndicator={false}
+>
+  {/* All your sections here */}
+
     <View
       style={{
         flex: 1,
@@ -110,5 +120,6 @@ export default function Dashboard() {
       </View>
 
     </View>
+    </ScrollView>
   );
 }
