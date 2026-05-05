@@ -1,6 +1,8 @@
 import Checkbox from '@/components/ui/Checkbox';
 import RadioGroup from '@/components/ui/RadioGroup';
 import Select from '@/components/ui/Select';
+import { useAuth } from '@/hooks/fake_auth';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import Button from '../../components/ui/Button';
@@ -17,6 +19,9 @@ export default function Dashboard() {
   const [country, setCountry] = useState('');
   const [isChecked, setIsChecked] = useState(false);
 
+  const { logout } = useAuth();
+  const router = useRouter();
+
   return (
     <ScrollView
   contentContainerStyle={{
@@ -26,6 +31,21 @@ export default function Dashboard() {
   }}
   showsVerticalScrollIndicator={false}
 >
+
+  <Button
+    title="Logout"
+     style={{
+        flex: 1,
+        backgroundColor: theme.colors.background,
+        padding: theme.spacing.md,
+        gap: theme.spacing.lg,
+      }}
+    onPress={() => {
+      logout(); // ❌ remove access
+          router.replace('/login'); // 🔁 redirect
+        
+    }}
+  />
   {/* All your sections here */}
 
     <View
