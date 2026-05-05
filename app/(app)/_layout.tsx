@@ -39,6 +39,7 @@ import { Redirect, Stack, Tabs } from 'expo-router';
 import { useWindowDimensions } from 'react-native';
 import { useAuth } from '../../hooks/fake_auth';
 
+import MobileLayout from '../layouts/MobileLayout';
 import WebLayout from '../layouts/web/WebLayout';
 
 export default function AppLayout() {
@@ -63,6 +64,7 @@ export default function AppLayout() {
 
   // 📱 MOBILE → Bottom Tabs
   return (
+          <MobileLayout>
     <Tabs
       screenOptions={({ route }) => ({
         headerShown: false,
@@ -81,5 +83,6 @@ export default function AppLayout() {
       <Tabs.Screen name="tab1" />
       <Tabs.Screen name="tab2" />
     </Tabs>
+    </MobileLayout>
   );
 }
