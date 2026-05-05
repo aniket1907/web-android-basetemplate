@@ -2,7 +2,6 @@ import { usePathname, useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import {
   Animated,
-  Pressable,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -15,9 +14,12 @@ export default function WebLayout({ children }: any) {
   const path = usePathname();
   const theme = useTheme();
 
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const sidebarWidth = 220;
 
-  const sidebarAnim = useRef(new Animated.Value(-220)).current;
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
+
+  // 🔥 animation value (0 → closed, 1 → open)
+  const anim = useRef(new Animated.Value(1)).current;
 
   const menu = [
     { name: 'Dashboard', path: '/dashboard' },
@@ -25,14 +27,24 @@ export default function WebLayout({ children }: any) {
     { name: 'Tab 2', path: '/tab2' },
   ];
 
-  // 🔥 Animate sidebar
   useEffect(() => {
-    Animated.timing(sidebarAnim, {
-      toValue: isSidebarOpen ? 0 : -220,
+    Animated.timing(anim, {
+      toValue: isSidebarOpen ? 1 : 0,
       duration: 250,
-      useNativeDriver: true,
+      useNativeDriver: false, // needed for layout (margin)
     }).start();
   }, [isSidebarOpen]);
+
+  // 🔥 derived animations
+  const sidebarTranslate = anim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-sidebarWidth, 0],
+  });
+
+  const contentMargin = anim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, sidebarWidth],
+  });
 
   return (
     <View style={{ flex: 1 }}>
@@ -51,7 +63,7 @@ export default function WebLayout({ children }: any) {
           zIndex: 10,
         }}
       >
-        <TouchableOpacity onPress={() => setSidebarOpen(true)}>
+        <TouchableOpacity onPress={() => setSidebarOpen(!isSidebarOpen)}>
           <Text style={{ fontSize: 18 }}>☰</Text>
         </TouchableOpacity>
 
@@ -70,20 +82,6 @@ export default function WebLayout({ children }: any) {
       {/* ================= BODY ================= */}
       <View style={{ flex: 1, flexDirection: 'row' }}>
 
-        {/* 🔥 OVERLAY */}
-        {isSidebarOpen && (
-          <Pressable
-            onPress={() => setSidebarOpen(false)}
-            style={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              backgroundColor: 'rgba(0,0,0,0.3)',
-              zIndex: 5,
-            }}
-          />
-        )}
-
         {/* ================= SIDEBAR ================= */}
         <Animated.View
           style={{
@@ -91,16 +89,15 @@ export default function WebLayout({ children }: any) {
             left: 0,
             top: 0,
             bottom: 0,
-            width: 220,
+            width: sidebarWidth,
             backgroundColor: theme.colors.surface,
             padding: 20,
             borderRightWidth: 1,
             borderColor: theme.colors.border,
-            transform: [{ translateX: sidebarAnim }],
-            zIndex: 10,
+            transform: [{ translateX: sidebarTranslate }],
+            zIndex: 5,
           }}
         >
-          {/* Close */}
           <TouchableOpacity
             onPress={() => setSidebarOpen(false)}
             style={{ marginBottom: 20 }}
@@ -113,7 +110,6 @@ export default function WebLayout({ children }: any) {
               key={item.path}
               onPress={() => {
                 router.replace(item.path);
-                setSidebarOpen(false);
               }}
               style={{
                 padding: 12,
@@ -140,16 +136,23 @@ export default function WebLayout({ children }: any) {
         </Animated.View>
 
         {/* ================= CONTENT ================= */}
-        <ScrollView
-          contentContainerStyle={{
-            padding: theme.spacing.md,
-            backgroundColor: theme.colors.background,
-            flexGrow: 1,
+        <Animated.View
+          style={{
+            flex: 1,
+            marginLeft: contentMargin, // 🔥 push effect
           }}
-          showsVerticalScrollIndicator={false}
         >
-          {children}
-        </ScrollView>
+          <ScrollView
+            contentContainerStyle={{
+              padding: theme.spacing.md,
+              backgroundColor: theme.colors.background,
+              flexGrow: 1,
+            }}
+            showsVerticalScrollIndicator={false}
+          >
+            {children}
+          </ScrollView>
+        </Animated.View>
       </View>
 
       {/* ================= FOOTER ================= */}
