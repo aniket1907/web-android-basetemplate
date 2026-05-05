@@ -4,7 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider } from '../theme/themeContext';
 
 import MobileLayout from './layouts/MobileLayout';
-import WebLayout from './layouts/WebLayout';
+import WebLayout from './layouts/web/WebLayout';
 
 export default function RootLayout() {
   const { width } = useWindowDimensions();
