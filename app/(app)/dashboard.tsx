@@ -1,3 +1,6 @@
+import Checkbox from '@/components/ui/Checkbox';
+import RadioGroup from '@/components/ui/RadioGroup';
+import Select from '@/components/ui/Select';
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import Button from '../../components/ui/Button';
@@ -10,6 +13,9 @@ export default function Dashboard() {
 
   const [name, setName] = useState('');
   const [error, setError] = useState('');
+  const [gender, setGender] = useState('');
+  const [country, setCountry] = useState('');
+  const [isChecked, setIsChecked] = useState(false);
 
   return (
     <ScrollView
@@ -91,6 +97,88 @@ export default function Dashboard() {
           }}
         />
       </View>
+
+        {/* ================= Radio Group SECTION ================= */}
+      <View style={{ gap: theme.spacing.sm }}>
+        <Text style={{ color: theme.colors.textPrimary }}>
+          Radio Group
+        </Text>
+
+        <RadioGroup
+  label="Gender"
+  value={gender}
+  onChange={setGender}
+  options={[
+    { label: 'Male', value: 'male' },
+    { label: 'Female', value: 'female' },
+  ]}
+/>
+
+        <Input
+          label="With Error"
+          placeholder="Try submit empty"
+          value={name}
+          onChangeText={setName}
+          error={error}
+        />
+
+        <Button
+          title="Validate Input"
+          onPress={() => {
+            if (!name) {
+              setError('Name is required');
+            } else {
+              console.log('Valid:', name);
+            }
+          }}
+        />
+      </View>
+
+      {/* ================= SELECT SECTION ================= */}
+<View style={{ gap: theme.spacing.sm }}>
+  <Text style={{ color: theme.colors.textPrimary }}>
+    Select Dropdown
+  </Text>
+
+  <Select
+    label="Country"
+    value={country}
+    onChange={setCountry}
+    options={[
+      { label: 'India', value: 'india' },
+      { label: 'USA', value: 'usa' },
+      { label: 'UK', value: 'uk' },
+    ]}
+  />
+
+  <Button
+    title="Show Selected"
+    onPress={() => {
+      console.log('Selected Country:', country);
+    }}
+  />
+</View>
+
+
+{/* ================= CHECKBOX SECTION ================= */}
+<View style={{ gap: theme.spacing.sm }}>
+  <Text style={{ color: theme.colors.textPrimary }}>
+    Checkbox
+  </Text>
+
+  <Checkbox
+    label="Accept Terms & Conditions"
+    value={isChecked}
+    onChange={setIsChecked}
+  />
+
+  <Button
+    title="Check Status"
+    onPress={() => {
+      console.log('Checked:', isChecked);
+    }}
+  />
+</View>
 
       {/* ================= BUTTON SECTION ================= */}
       <View style={{ gap: theme.spacing.sm }}>
