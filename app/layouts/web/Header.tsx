@@ -1,6 +1,13 @@
+import { useAuth } from '@/hooks/fake_auth';
+import { useRouter } from 'expo-router';
 import { Text, TouchableOpacity, View } from 'react-native';
+import { useTheme } from '../../../theme/themeContext';
 
-export default function Header({ onToggle, theme }: any) {
+export default function Header({ onToggle }: any) {
+  const theme = useTheme();
+  const router = useRouter();
+const { logout } = useAuth();
+
   return (
     <View
       style={{
@@ -12,13 +19,14 @@ export default function Header({ onToggle, theme }: any) {
         borderBottomWidth: 1,
         borderColor: theme.colors.border,
         backgroundColor: theme.colors.surface,
-        zIndex: 10,
       }}
     >
+      {/* LEFT */}
       <TouchableOpacity onPress={onToggle}>
         <Text style={{ fontSize: 18 }}>☰</Text>
       </TouchableOpacity>
 
+      {/* CENTER */}
       <Text
         style={{
           color: theme.colors.textPrimary,
@@ -28,7 +36,15 @@ export default function Header({ onToggle, theme }: any) {
         My App
       </Text>
 
-      <View />
+      {/* RIGHT - LOGOUT */}
+      <TouchableOpacity
+        onPress={() => {
+          logout(); // ❌ remove access
+          router.replace('/login'); // 🔁 redirect
+        }}
+      >
+        <Text style={{ color: 'red' }}>Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 }
