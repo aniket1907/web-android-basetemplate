@@ -25,6 +25,7 @@ export default function WebLayout({ children }: any) {
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Tab 1', path: '/tab1' },
     { name: 'Tab 2', path: '/tab2' },
+    { name: 'Users', path: '/users' }
   ];
 
   useEffect(() => {

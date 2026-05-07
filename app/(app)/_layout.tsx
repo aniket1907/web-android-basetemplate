@@ -64,25 +64,27 @@ export default function AppLayout() {
 
   // 📱 MOBILE → Bottom Tabs
   return (
-          <MobileLayout>
-    <Tabs
-      screenOptions={({ route }) => ({
-        headerShown: false,
-        tabBarIcon: ({ color, size }) => {
-          let iconName: any;
+    <MobileLayout>
+      <Tabs
+        screenOptions={({ route }) => ({
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => {
+            let iconName: any;
 
-          if (route.name === 'dashboard') iconName = 'home';
-          else if (route.name === 'tab1') iconName = 'grid';
-          else if (route.name === 'tab2') iconName = 'layers';
+            if (route.name === 'dashboard') iconName = 'home';
+            else if (route.name === 'tab1') iconName = 'grid';
+            else if (route.name === 'tab2') iconName = 'layers';
+            else if (route.name === 'users') iconName = 'people';
 
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-      })}
-    >
-      <Tabs.Screen name="dashboard" />
-      <Tabs.Screen name="tab1" />
-      <Tabs.Screen name="tab2" />
-    </Tabs>
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+        })}
+      >
+        <Tabs.Screen name="dashboard" />
+        <Tabs.Screen name="tab1" />
+        <Tabs.Screen name="tab2" />
+        <Tabs.Screen name="users" />
+      </Tabs>
     </MobileLayout>
   );
 }
